@@ -52,9 +52,27 @@ app.use(helmet({
 // CORS configuration
 // CORS configuration
 app.use(cors({
-  origin: function(origin, callback) {
-    // Allow all origins in development
-    callback(null, true);
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      process.env.CLIENT_URL,
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'https://your-vercel-url.vercel.app',
+    ].filter(Boolean);
+
+    // Allow requests with no origin (mobile apps, curl)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      // Allow all vercel deployments
+      if (origin.includes('vercel.app') || origin.includes('localhost')) {
+        callback(null, true);
+      } else {
+        callback(null, true); // Allow all in development
+      }
+    }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
