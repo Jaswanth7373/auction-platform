@@ -13,29 +13,23 @@ const connectRedis = async () => {
       host: process.env.REDIS_HOST || 'localhost',
       port: parseInt(process.env.REDIS_PORT) || 6379,
       retryStrategy: (times) => {
-        if (times > 5) {
+        if (times > 3) {
           logger.warn('Redis max retries reached. Disabling cache.');
-          return null; // stop retrying
+          return null;
         }
-        return Math.min(times * 500, 3000);
-      },
+        return Math.min(times * 500, 2000);
+        },
       maxRetriesPerRequest: 1,
       connectTimeout: 10000,
       enableOfflineQueue: false,
-      lazyConnect: false,
     };
 
-    // Add password if provided
     if (process.env.REDIS_PASSWORD) {
       config.password = process.env.REDIS_PASSWORD;
     }
 
-    // Add TLS for Redis Cloud
-    if (isCloud) {
-      config.tls = { rejectUnauthorized: false };
-    }
-
-    redisClient = new Redis(config);
+// NO TLS - Redis Cloud on this port doesn't use TLS
+redisClient = new Redis(config);
 
     redisClient.on('connect', () => logger.info('✅ Redis Connected'));
     redisClient.on('ready', () => logger.info('✅ Redis Ready'));
