@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #0f172a;
+  color: white;
+}
+@layer base {
+  :root {
+    --color-primary: 99 102 241;
+    --color-accent: 139 92 246;
+    --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    --gradient-dark: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html { @apply scroll-smooth; }
+
+  body {
+    @apply bg-dark-950 text-dark-100 font-sans antialiased;
+    background-image: radial-gradient(ellipse at 20% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+                      radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+    min-height: 100vh;
+  }
+
+  ::-webkit-scrollbar { @apply w-1.5; }
+  ::-webkit-scrollbar-track { @apply bg-dark-900; }
+  ::-webkit-scrollbar-thumb { @apply bg-dark-600 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-primary-500; }
+
+  ::selection { @apply bg-primary-500/30 text-white; }
+}
+
+@layer components {
+  /* Glassmorphism cards */
+  .glass {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl;
+  }
+  .glass-dark {
+    @apply bg-dark-900/80 backdrop-blur-xl border border-dark-700/50 rounded-2xl;
+  }
+  .glass-card {
+    @apply bg-dark-800/60 backdrop-blur-lg border border-dark-700/40 rounded-2xl shadow-card-dark;
+    transition: all 0.3s ease;
+  }
+  .glass-card:hover {
+    @apply border-primary-500/30 shadow-glow;
+    transform: translateY(-2px);
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary-500 to-accent-purple text-white font-semibold px-6 py-3 rounded-xl
+           hover:from-primary-600 hover:to-purple-700 transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:ring-offset-2 focus:ring-offset-dark-900
+           disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] shadow-glow-sm;
+  }
+  .btn-secondary {
+    @apply bg-dark-800 text-dark-100 font-semibold px-6 py-3 rounded-xl border border-dark-600
+           hover:bg-dark-700 hover:border-dark-500 transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-dark-500 focus:ring-offset-2 focus:ring-offset-dark-900
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-outline {
+    @apply border border-primary-500 text-primary-400 font-semibold px-6 py-3 rounded-xl
+           hover:bg-primary-500/10 transition-all duration-200;
+  }
+  .btn-danger {
+    @apply bg-gradient-to-r from-red-600 to-red-500 text-white font-semibold px-6 py-3 rounded-xl
+           hover:from-red-700 hover:to-red-600 transition-all duration-200;
+  }
+  .btn-gold {
+    @apply bg-gradient-to-r from-amber-500 to-yellow-500 text-dark-900 font-bold px-6 py-3 rounded-xl
+           hover:from-amber-600 hover:to-yellow-600 transition-all duration-200 shadow-lg;
+  }
+
+  /* Form inputs */
+  .input-field {
+    @apply w-full bg-dark-800/80 border border-dark-600 text-dark-100 placeholder-dark-400
+           rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500
+           transition-all duration-200;
+  }
+
+  /* Badges */
+  .badge-live {
+    @apply inline-flex items-center gap-1 bg-red-500/20 text-red-400 border border-red-500/30
+           text-xs font-bold px-2.5 py-1 rounded-full;
+  }
+  .badge-verified {
+    @apply inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30
+           text-xs font-semibold px-2.5 py-1 rounded-full;
+  }
+  .badge-category {
+    @apply inline-flex items-center bg-primary-500/10 text-primary-400 border border-primary-500/20
+           text-xs font-medium px-2.5 py-1 rounded-full capitalize;
+  }
+
+  /* Auction timer */
+  .timer-unit {
+    @apply flex flex-col items-center justify-center bg-dark-800/80 border border-dark-600
+           rounded-xl p-2 min-w-[52px];
+  }
+  .timer-value {
+    @apply text-2xl font-black text-white font-mono leading-none;
+  }
+  .timer-label {
+    @apply text-[10px] text-dark-400 uppercase tracking-widest mt-1;
+  }
+
+  /* Skeleton loading */
+  .skeleton {
+    @apply bg-dark-700/60 rounded-xl animate-pulse;
+  }
+
+  /* Bid animation */
+  .bid-flash {
+    animation: bidFlash 0.5s ease-out;
+  }
+  @keyframes bidFlash {
+    0% { background-color: rgba(99, 102, 241, 0.3); }
+    100% { background-color: transparent; }
+  }
+
+  /* Sidebar nav item */
+  .nav-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-dark-400 font-medium
+           hover:text-white hover:bg-dark-700/60 transition-all duration-200 cursor-pointer;
+  }
+  .nav-item.active {
+    @apply text-white bg-primary-500/20 border border-primary-500/20;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-400 to-accent-purple bg-clip-text text-transparent;
+  }
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent;
+  }
+  .bg-gradient-primary {
+    background: var(--gradient-primary);
+  }
+  .border-gradient {
+    border-image: linear-gradient(135deg, #6366f1, #8b5cf6) 1;
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
