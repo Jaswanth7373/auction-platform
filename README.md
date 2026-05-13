@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🔨 AuctionPro — Real-Time Auction Platform
 
 A **production-ready, full-stack real-time auction platform** built with React, Node.js, MongoDB, Socket.IO, and Stripe. Features live bidding, seller dashboards, admin panels, AI bid recommendations, and more.
@@ -322,3 +323,6 @@ MIT License — Free to use for personal and commercial projects.
 ## 👨‍💻 Built With ❤️ using AuctionPro Stack
 
 > Perfect for final year college projects, portfolios, and production applications.
+=======
+# auction-platform
+>>>>>>> bab6217dc4ad9f9eeade096a579f9dca32ba1bfa
