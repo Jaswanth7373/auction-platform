@@ -2,16 +2,18 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Only use Cloudinary if properly configured
 const isCloudinaryConfigured =
   process.env.CLOUDINARY_CLOUD_NAME &&
   process.env.CLOUDINARY_CLOUD_NAME !== 'your_cloud_name' &&
+  process.env.CLOUDINARY_CLOUD_NAME !== '' &&
   process.env.CLOUDINARY_API_KEY &&
   process.env.CLOUDINARY_API_KEY !== 'your_api_key' &&
+  process.env.CLOUDINARY_API_KEY !== '' &&
   process.env.CLOUDINARY_API_SECRET &&
-  process.env.CLOUDINARY_API_SECRET !== 'your_api_secret';
+  process.env.CLOUDINARY_API_SECRET !== 'your_api_secret' &&
+  process.env.CLOUDINARY_API_SECRET !== '';
 
-// Local disk storage (used when Cloudinary not configured)
+// Local disk storage fallback
 const uploadDir = path.join(__dirname, '../uploads');
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
@@ -28,7 +30,7 @@ const fileFilter = (req, file, cb) => {
   const ext = allowed.test(path.extname(file.originalname).toLowerCase());
   const mime = allowed.test(file.mimetype);
   if (ext && mime) cb(null, true);
-  else cb(new Error('Only image files (jpeg, jpg, png, webp) are allowed'), false);
+  else cb(new Error('Only image files allowed'), false);
 };
 
 let cloudinary = null;
@@ -37,8 +39,11 @@ let profileStorage = localDiskStorage;
 
 if (isCloudinaryConfigured) {
   try {
-    cloudinary = require('cloudinary').v2;
-    const { CloudinaryStorage } = require('multer-storage-cloudinary');
+    const cloudinaryModule = require('cloudinary');
+    cloudinary = cloudinaryModule.v2;
+
+    const multerStorageCloudinary = require('multer-storage-cloudinary');
+    const CloudinaryStorage = multerStorageCloudinary.CloudinaryStorage;
 
     cloudinary.config({
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -71,7 +76,7 @@ if (isCloudinaryConfigured) {
     profileStorage = localDiskStorage;
   }
 } else {
-  console.log('ℹ️ Cloudinary not configured - using local storage for uploads');
+  console.log('ℹ️ Cloudinary not configured - using local storage');
 }
 
 const uploadAuctionImages = multer({
