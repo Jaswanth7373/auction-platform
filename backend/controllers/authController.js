@@ -32,6 +32,7 @@ const register = asyncHandler(async (req, res) => {
     role: userRole,
     isVerified: true,  // Auto-verify in development
     isActive: true,
+    loginAttempts: 0,
   });
   // Generate and send OTP
   const otp = user.generateOTP();

@@ -135,12 +135,15 @@ const createAuction = asyncHandler(async (req, res) => {
   } = req.body;
 
   // Process uploaded images
-  const baseUrl = `${req.protocol}://${req.get('host')}`;
-  const images = (req.files || []).map((file, idx) => ({
-    url: file.secure_url || `${baseUrl}/uploads/${file.filename}`,
-    publicId: file.filename || file.public_id || '',
-    isPrimary: idx === 0,
-  }));
+  const isProduction = process.env.NODE_ENV === 'production';
+const baseUrl = isProduction
+    ? `https://${req.get('host')}`
+    : `${req.protocol}://${req.get('host')}`;
+const images = (req.files || []).map((file, idx) => ({
+  url: file.secure_url || `${baseUrl}/uploads/${file.filename}`,
+  publicId: file.filename || file.public_id || '',
+  isPrimary: idx === 0,
+}));
 
   const auctionData = {
     seller: seller._id, title, description, category, subcategory, condition,
