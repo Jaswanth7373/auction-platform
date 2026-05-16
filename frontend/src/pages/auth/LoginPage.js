@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
-import { FcGoogle } from 'react-icons/fc';
 import { MdGavel } from 'react-icons/md';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -36,9 +35,7 @@ const LoginPage = () => {
     }
   };
 
-  const handleGoogle = () => {
-    window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`;
-  };
+
 
   return (
     <div className="min-h-screen bg-dark-950 flex items-center justify-center px-4">
@@ -61,17 +58,12 @@ const LoginPage = () => {
             <p className="text-dark-400 text-sm mt-1">Sign in to continue bidding</p>
           </div>
 
-          {/* Google OAuth */}
+          {/* Google OAuth - Uncomment when configured
           <button onClick={handleGoogle}
-            className="w-full flex items-center justify-center gap-3 btn-secondary py-3 mb-6 hover:border-dark-500">
-            <FcGoogle className="text-xl" />Sign in with Google
+          className="w-full flex items-center justify-center gap-3 btn-secondary py-3 mb-6 hover:border-dark-500">
+          <FcGoogle className="text-xl" />Sign in with Google
           </button>
-
-          <div className="flex items-center gap-3 mb-6">
-            <div className="flex-1 h-px bg-dark-700" />
-            <span className="text-dark-500 text-xs">or email</span>
-            <div className="flex-1 h-px bg-dark-700" />
-          </div>
+          */}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

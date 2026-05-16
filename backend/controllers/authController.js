@@ -25,8 +25,14 @@ const register = asyncHandler(async (req, res) => {
   const allowedRoles = ['user', 'seller'];
   const userRole = allowedRoles.includes(role) ? role : 'user';
 
-  const user = await User.create({ name: name.trim(), email: email.toLowerCase(), password, role: userRole });
-
+  const user = await User.create({
+    name: name.trim(),
+    email: email.toLowerCase(),
+    password,
+    role: userRole,
+    isVerified: true,  // Auto-verify in development
+    isActive: true,
+  });
   // Generate and send OTP
   const otp = user.generateOTP();
   await user.save();
